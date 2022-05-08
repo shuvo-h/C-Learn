@@ -8,18 +8,18 @@ Determine whether Masud is away from home at 3030 minutes past XX o'clock.
 
 #include<stdio.h>
 int main(){
-    int S,T,X;
-    scanf("%d %d %d", &S,&T,&X);
-    if( S>T){
-        if(S<=X && X<=23){
+    int St,Tt,Xt;
+    scanf("%d %d %d", &St,&Tt,&Xt);
+    if( St>Tt){
+        if(St<=Xt && Xt<=23){
             printf("Yes");
-        }else if(X<T){
+        }else if(Xt<Tt){
             printf("Yes");
         }else{
             printf("No");
         }
     }else{
-        if(S<X && X<T){
+        if(St<Xt && Xt<Tt){
             printf("Yes");
         }else{
             printf("No");

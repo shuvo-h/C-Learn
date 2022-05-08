@@ -31,28 +31,22 @@ int main(){
 
     for(int i=0; takTimeRem > 0;i++){
            if(takTimeRem < A && takTimeRem > 0){
-                // printf("still Time = %d\n",takTimeRem);
                 takResult = takResult + (takTimeRem * B);
                 takTimeRem = takTimeRem - (takTimeRem);
            }else if(takTimeRem >= A && takTimeRem > 0){
-               // printf("still Time = %d\n",takTimeRem);
                 takResult = takResult + (A * B);
                 takTimeRem = takTimeRem - (A + C);
            }
-           // printf("takResult = %d, takTimeRem = %d\n",takResult,takTimeRem);
     }
 
     for(int i=0; aokiTimeRem > 0;i++){
            if(aokiTimeRem < D && aokiTimeRem > 0){
-                // printf("still Time = %d\n",aokiTimeRem);
                 aokiResult = aokiResult + (aokiTimeRem * E);
                 aokiTimeRem = aokiTimeRem - (aokiTimeRem);
            }else if(aokiTimeRem >= D && aokiTimeRem > 0){
-               // printf("still Time = %d\n",aokiTimeRem);
                 aokiResult = aokiResult + (D * E);
                 aokiTimeRem = aokiTimeRem - (D + F);
            }
-           // printf("aokiResult = %d, aokiTimeRem = %d\n",aokiResult,aokiTimeRem);
     }
 
     if(takResult == aokiResult){
