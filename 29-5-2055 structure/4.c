@@ -19,6 +19,8 @@ struct Date getFirstDay(int year){
     return ans;
 };
 
+
+
 int main(){
     struct Date today;
     printf("Type the date you want to know if it is new year or not: \n");
