@@ -14,7 +14,7 @@ int check_palindrome(char str[]){
 }
 
 int main(){
-    char s[100] = "abcdba";
+    char s[100] = "afghhagt";
     int count = check_palindrome(s);
      printf("Change need = %d\n",count);
     return 0;
