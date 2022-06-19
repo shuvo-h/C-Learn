@@ -24,4 +24,5 @@ int main(){
     }
     fprintf(outputFile,"sum -> %d \n",sum);
     printf("Sum -> %d \n",sum);
+    printf("Sum -> %d \n",sum + 1);
 }
