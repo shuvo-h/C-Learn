@@ -58,6 +58,8 @@ void deleteAnElement_sortedArray(int array[], int *size, int pos, int newElement
 
 
 int main(){
+
+    /*
     int array[50],size;
     cout<<"Type the size of array: ";
     cin>>size;
@@ -80,5 +82,17 @@ int main(){
     cout<<"New array Elements after Insertion: ";
     printArray(array,size);
     cout<<endl;
+    */
+
+    int a[3];
+for(int i=0;i<4;i++)
+{
+    a[i]=i;
+}
+for(int i=0;i<4;i++)
+{
+    cout<<a[i]<<" ";
+}
+
     return 0;
 }
