@@ -35,5 +35,14 @@ int main(){
         }
     }
     //take2DArrinput(&numArray,row,col);
-    print2DArry(&numArray,row,col);
+    //print2DArry(&numArray,row,col);
+    for(int i=0;i<row;i++){
+        for(int j=0;j<col;j++){
+            cout<<numArray[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<endl;
+
+    return 0;
 }

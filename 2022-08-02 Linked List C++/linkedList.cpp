@@ -45,6 +45,7 @@ void insertAtHead(Node *&head,int val){
     //step 3: update of head
     head = newNode;
 }
+
 int main(){
     Node *head = NULL;
 
