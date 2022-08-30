@@ -63,30 +63,138 @@ void inOrder(treeNode *root, string &chk){
 
 
 // root :> left :> right
-void preOrder(treeNode *root, string &chk){
+void preOrderTraversal(treeNode *root, string &chk){
     if(root == NULL) {
         return;
     }
     chk += to_string(root->data);
-    preOrder(root->leftChild,chk);
-    preOrder(root->rightChild,chk);
+    preOrderTraversal(root->leftChild,chk);
+    preOrderTraversal(root->rightChild,chk);
 
 }
 
 
 // left :> right :> root
-void postOrder(treeNode *root, string &chk){
+void postOrderTraversal(treeNode *root, string &chk){
     if(root == NULL) {
         return;
     }
-    postOrder(root->leftChild,chk);
-    postOrder(root->rightChild,chk);
+    postOrderTraversal(root->leftChild,chk);
+    postOrderTraversal(root->rightChild,chk);
     chk += to_string(root->data);
 
 }
 
+int levelOrderTraversal(treeNode *root, string &chk, int k){
+    if(root == NULL) {
+        return -1;
+    }
+    queue <treeNode*>q;
+    q.push(root);
+    q.push(NULL);
+    int level = 0;
+    int max = -9999;
+
+    while(!q.empty()){
+        treeNode *chkNode = q.front();
+        q.pop();
+        if(chkNode != NULL){
+            // check the max value at the k level
+            if(level == k){
+                if(max<chkNode->data){
+                    max = chkNode->data;
+                }
+            }
+            cout<<chkNode->data<<" ";
+            chk += to_string(chkNode->data);
+            if(chkNode->leftChild != NULL){
+                q.push(chkNode->leftChild);
+            }
+            if(chkNode->rightChild != NULL){
+                q.push(chkNode->rightChild);
+            }
+        }else if(!q.empty()){
+            q.push(NULL);
+            level++;
+        }
+    }
+
+    return max;
+}
+
+int searchInOrder(int inOrder[], int current, int start, int end){
+    for(int i = start; i<=end; i++){
+        if(inOrder[i] == current){
+            return i;
+        }
+    }
+    return -1;
+}
+
+treeNode *buildTreePreIn(int preOrder[], int inOrder[], int start, int end){
+    static int id =0;  // id is static variable, so the value will never changed until the program end
+    int current = preOrder[id];
+    id++;
+    treeNode *newNode = new treeNode(current);
+    if(start == end){
+        return newNode;
+    }
+
+    int pos = searchInOrder(inOrder,current,start,end);
+
+    // recursive call for both left and right side of the found position
+    newNode->leftChild = buildTreePreIn(preOrder,inOrder,start,pos-1); // for leftChildNode
+    newNode->rightChild = buildTreePreIn(preOrder,inOrder,pos+1,end); // for rightChildNode
+
+    return newNode;
+}
+
+void printLeaves(treeNode *root){
+    if(root == NULL) return;
+    if(root->leftChild == NULL && root->rightChild == NULL){
+        cout<<root->data<<" ";
+        return;
+    }
+    printLeaves(root->leftChild);
+    printLeaves(root->rightChild);
+}
+void printLeftNonLeaves(treeNode *root){
+    if(root == NULL) return;
+    if(root->leftChild!=NULL){
+        cout<<root->data<<" ";
+        printLeftNonLeaves(root->leftChild);
+    }else if(root->rightChild!= NULL){
+        cout<<root->data<<" ";
+        printLeftNonLeaves(root->rightChild);
+    }
+}
+void printRightNonLeaves(treeNode *root){
+    if(root == NULL) return;
+    if(root->rightChild!=NULL){
+        cout<<root->data<<" ";
+        printLeftNonLeaves(root->rightChild);
+    }else if(root->leftChild!= NULL){
+        cout<<root->data<<" ";
+        printLeftNonLeaves(root->leftChild);
+    }
+}
+
+void boundaryTraversal(treeNode *root){
+    if(root == NULL) return;
+    cout<<root->data<<" ";
+
+    // Left Boundary Non-Leaves
+    printLeftNonLeaves(root->leftChild);
+    // Left Boundary Leaves
+    printLeaves(root->leftChild);
+    // Right Boundary Leaves
+    printLeaves(root->rightChild);
+    // Right Boundary Non-Leaves
+    printRightNonLeaves(root->leftChild);
+}
 
 int main(){
+
     // input on number of node in the tree
     int n;
     cin>>n;
@@ -113,7 +221,7 @@ int main(){
             allNodes[i]->rightChild = allNodes[right];
         }
     }
-
+/*
     // print the tree
     printTree(allNodes[0], 0);
 
@@ -121,14 +229,41 @@ int main(){
     inOrder(allNodes[0], inorderTraversal);
     cout<<"Inorder Traversal : "<<inorderTraversal<<endl;
 
-    string preOrderTraversal = "";
-    preOrder(allNodes[0], preOrderTraversal);
-    cout<<"PreOrder Traversal : "<<preOrderTraversal<<endl;
+    string preOrderTraversalStr = "";
+    preOrderTraversal(allNodes[0], preOrderTraversalStr);
+    cout<<"PreOrder Traversal : "<<preOrderTraversalStr<<endl;
 
-    string postOrderTraversal = "";
-    postOrder(allNodes[0], postOrderTraversal);
-    cout<<"PostOrder Traversal : "<<postOrderTraversal<<endl;
+    string postOrderTraversalStr = "";
+    postOrderTraversal(allNodes[0], postOrderTraversalStr);
+    cout<<"PostOrder Traversal : "<<postOrderTraversalStr<<endl;
 
+    string levelOrderTraversalStr = "";
+    int searchvalueInLevel = 2;
+    int maxValueAtK = levelOrderTraversal(allNodes[0], levelOrderTraversalStr,searchvalueInLevel);
+    cout<<endl<<"Maximum value at "<<searchvalueInLevel<<" level : "<<maxValueAtK<<endl;
+*/
+    // boundary Traversal
+    cout<<"Boundary Traversal : ";
+    boundaryTraversal(allNodes[0]);
+    cout<<endl;
+
+
+    // inOrder + preOrder = binary tree
+    cout<<"Making Binary Tree from inOrder + preOrder"<<endl;
+    int num;
+    cin>>num;
+    int preOrderArr[num], inOrderArr[num];
+    for(int i=0; i<num; i++){
+        cin>>preOrderArr[i];
+    }
+    for(int i=0; i<num; i++){
+        cin>>inOrderArr[i];
+    }
+    int startNodeNumber = 0, endNodeNumber = num-1;
+    treeNode *rootBinaryTree = buildTreePreIn(preOrderArr,inOrderArr,startNodeNumber,endNodeNumber);
+    string chkPreString = "";
+    preOrderTraversal(rootBinaryTree,chkPreString);
+    cout<<endl<<"Builded Binary Tree from in and pre order = "<<chkPreString<<endl;
     return 0;
 }
 
@@ -193,4 +328,21 @@ Right:
   preOrder + inOrder = unique binary tree
   postOrder + inOrder = unique binary tree
   preOrder + postOrder = multiple binary tree  (if full binary tree, then a qunique tree can be made)
+*/
+
+/*
+Input for this file:
+9
+0   1  2
+1   3  4
+2   5  6
+3  -1 -1
+4  -1 -1
+5   7  8
+6  -1 -1
+7  -1 -1
+8  -1 -1
+9
+0 1 3 4 2 5 7 8 6
+3 1 4 0 7 5 8 2 6
 */
