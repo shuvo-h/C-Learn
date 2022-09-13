@@ -56,7 +56,7 @@ void inOrder(treeNode *root, string &chk){
         return;
     }
     inOrder(root->leftChild,chk);
-    chk += to_string(root->data);
+    chk += (to_string(root->data)) + " ";
     inOrder(root->rightChild,chk);
 
 }
@@ -193,6 +193,167 @@ void boundaryTraversal(treeNode *root){
     printRightNonLeaves(root->leftChild);
 }
 
+treeNode* insertionBST(treeNode* root, int value){
+    treeNode *newNode = new treeNode(value);
+    if(root==NULL){
+        root = newNode;
+        return root;
+    }
+        // value < root->data
+    if(value < root->data){
+        root->leftChild = insertionBST(root->leftChild,value);
+    }else if(value > root->data){
+        // value > root->data
+        root->rightChild = insertionBST(root->rightChild,value);
+    }
+    return root;
+}
+
+treeNode *searchBST(treeNode *root, int value){
+    if(root == NULL){
+        return NULL;
+    }
+    if(root->data  == value){
+        cout<<root->data;
+        return root;
+    }else if(value < root->data){
+        cout<<root->data<<" -> ";
+        searchBST(root->leftChild, value);
+    }else{
+        cout<<root->data<<" -> ";
+        searchBST(root->rightChild, value);
+    }
+}
+
+treeNode* inOrderSuccessor(treeNode *root){
+    treeNode *curr = root;
+    while(curr->leftChild != NULL){
+        curr = curr->leftChild;
+    }
+    return curr;
+}
+
+treeNode *deletionBST(treeNode *root, int value){
+
+
+    if(value < root->data){
+            root->leftChild = deletionBST(root->leftChild,value);
+    }else if(value > root->data){
+        root->rightChild = deletionBST(root->rightChild,value);
+    }else{
+        // implementation of 3 cases
+        if(root->leftChild == NULL){
+            treeNode *temp = root->rightChild;
+            free(root);
+            return temp;
+        }else if(root->rightChild == NULL){
+            treeNode *temp = root->leftChild;
+            free(root);
+            return temp;
+        }else{
+            treeNode *temp = inOrderSuccessor(root->rightChild);
+            root->data = temp->data;
+            root->rightChild = deletionBST(root->rightChild,temp->data);
+        }
+
+        return root;
+    }
+}
+
+void zigzagTraversal(treeNode *root){
+    stack<treeNode*> currentLevel;
+    stack<treeNode*> nextLevel;
+
+    bool leftToRight = true;
+    currentLevel.push(root);
+    while(!currentLevel.empty()){
+        treeNode* x = currentLevel.top();
+        currentLevel.pop();
+        cout<<x->data<<" ";
+        if(leftToRight){
+            if(x->leftChild){
+                nextLevel.push(x->leftChild);
+            }
+            if(x->rightChild){
+                nextLevel.push(x->rightChild);
+            }
+        }else{
+            if(x->rightChild){
+                nextLevel.push(x->rightChild);
+            }
+            if(x->leftChild){
+                nextLevel.push(x->leftChild);
+            }
+        }
+        if(currentLevel.empty()){
+            leftToRight = !leftToRight;
+            swap(currentLevel,nextLevel);
+        }
+    }
+}
+
+/*
+Input:
+9
+11 5 9 43 34 1 2 7 21
+
+10
+11 5 9 43 34 1 2 7 8 21
+*/
+
+/*
+zigzag input
+10
+11 5 9 43 34 1 2 7 8 21
+*/
+
+int main(){
+    int n;
+    cin>>n;
+    treeNode *root = NULL;
+    for(int i=0; i<n; i++){
+        int value;
+        cin>>value;
+        root = insertionBST(root,value);
+    }
+
+    string traversalRes= "";
+    inOrder(root,traversalRes);
+    cout<<traversalRes<<endl;
+
+    // Zigzag traversal
+    string zigzag = "";
+    zigzagTraversal(root);
+
+    /*
+    // search in binary tree
+    int key;
+    cout<<"Enter the value you want to search: ";
+    cin>>key;
+    if(searchBST(root,key)== NULL){
+        cout<<endl<<"Value does not exist in the BTS"<<endl;
+    }else{
+        cout<<endl<<"Value exists in the BTS"<<endl;
+    }
+    */
+
+    /*
+        // delete a node from the tree
+        int key;
+        cout<<"Enter the value you want to delete: ";
+        cin>>key;
+        root = deletionBST(root,key);
+
+        // print the tree after delete ther desire node
+        string traversalResAfter = "";
+        inOrder(root,traversalResAfter);
+        cout<<endl<<traversalResAfter<<endl;
+    */
+
+    return 0;
+}
+
+/*
 int main(){
 
     // input on number of node in the tree
@@ -242,6 +403,7 @@ int main(){
     int maxValueAtK = levelOrderTraversal(allNodes[0], levelOrderTraversalStr,searchvalueInLevel);
     cout<<endl<<"Maximum value at "<<searchvalueInLevel<<" level : "<<maxValueAtK<<endl;
 */
+/*
     // boundary Traversal
     cout<<"Boundary Traversal : ";
     boundaryTraversal(allNodes[0]);
@@ -267,6 +429,7 @@ int main(){
     return 0;
 }
 
+*/
 
 /*
 Tree Draw:
